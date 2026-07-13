@@ -2,6 +2,8 @@
 
 **A grounded RAG knowledge base that cites its sources — and refuses when it doesn't know.**
 
+**[Live demo →](https://mimir-five-bice.vercel.app)** · [measured metrics →](docs/metrics.md)
+
 Mimir turns a set of documents into an API that answers questions with inline citations to the exact chunks the answer came from. When the answer is not in the corpus, it says so — `"Not in the knowledge base."` — instead of hallucinating. That honesty, plus a measured evaluation harness, is the point: this is a production-shaped RAG pipeline, not a demo that dumps everything into a prompt.
 
 ## What it does
