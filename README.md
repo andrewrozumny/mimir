@@ -101,7 +101,7 @@ The pipeline never hardcodes content. `corpus.config.json` defines a named corpu
 | Latency p50 / p95 | end-to-end pipeline time per query |
 | Cost per query | embeddings + generation, from real token usage |
 
-Numbers are printed from real API usage on every run — nothing is estimated.
+Numbers are printed from real API usage on every run — nothing is estimated. The latest measured run is captured in [docs/metrics.md](docs/metrics.md); regenerate it with `npm run eval -- --out docs/metrics.md` (add `--endpoint <url>` to measure a deployed instance).
 
 ## Architecture
 
