@@ -20,7 +20,10 @@ export interface Citation {
   id: string;
   source: string;
   heading: string | null;
+  /** Short preview for compact UIs. */
   snippet: string;
+  /** Full cited chunk text — lets clients show the source and evals judge faithfulness. */
+  content: string;
 }
 
 export interface Answer {
@@ -115,6 +118,7 @@ function extractCitations(answer: string, retrieved: RetrievedChunk[]): Citation
         source: chunk.source,
         heading: chunk.heading,
         snippet: chunk.content.slice(0, 200),
+        content: chunk.content,
       });
     }
   }

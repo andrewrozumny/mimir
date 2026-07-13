@@ -32,6 +32,15 @@ export async function ensureSchema(): Promise<void> {
   await db.query(
     "CREATE INDEX IF NOT EXISTS chunks_embedding_idx ON chunks USING hnsw (embedding vector_cosine_ops)"
   );
+  // Global daily budget counter — the demo runs on paid keys, so this is the
+  // fuse that stops answering once the day's request budget is spent.
+  await db.query(`
+    CREATE TABLE IF NOT EXISTS daily_usage (
+      day       date PRIMARY KEY,
+      requests  integer NOT NULL DEFAULT 0,
+      cost_usd  numeric NOT NULL DEFAULT 0
+    )
+  `);
 }
 
 /** pgvector accepts a JSON-array-shaped literal: "[0.1,0.2,...]". */
