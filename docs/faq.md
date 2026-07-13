@@ -30,7 +30,7 @@ Three layers. The prompt restricts the model to the retrieved context and requir
 
 ## Which models does it use, and can I swap them?
 
-Embeddings use OpenAI `text-embedding-3-small`; generation uses Anthropic Claude (`claude-opus-4-8`). Both sit behind one-file wrappers (`src/lib/embeddings.ts`, `src/lib/answer.ts`), so swapping providers or models is a local change that does not touch the pipeline.
+Embeddings use OpenAI `text-embedding-3-small`; generation uses Anthropic Claude (`claude-haiku-4-5` by default, set via the `GENERATION_MODEL` env var). Both sit behind one-file wrappers (`src/lib/embeddings.ts`, `src/lib/answer.ts`), so swapping providers or models is a local change that does not touch the pipeline. The default was chosen by running the eval across models — Haiku held quality at a fraction of the cost (see `docs/metrics.md`).
 
 ## Is this production-ready?
 

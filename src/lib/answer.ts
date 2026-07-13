@@ -2,10 +2,38 @@ import Anthropic from "@anthropic-ai/sdk";
 import { EMBEDDING_PRICE_PER_MTOK } from "./embeddings";
 import { retrieve, RetrievedChunk } from "./retrieve";
 
-export const GENERATION_MODEL = "claude-opus-4-8";
-/** USD per 1M tokens for claude-opus-4-8. */
-export const INPUT_PRICE_PER_MTOK = 5.0;
-export const OUTPUT_PRICE_PER_MTOK = 25.0;
+/**
+ * Standard (sticker) price per 1M tokens for each supported generation model.
+ * Deliberately the durable list rates, not any temporary introductory pricing, so
+ * the measured cost figures in docs/metrics.md stay defensible over time.
+ */
+export const MODEL_PRICING: Record<string, { input: number; output: number }> = {
+  "claude-opus-4-8": { input: 5.0, output: 25.0 },
+  "claude-sonnet-5": { input: 3.0, output: 15.0 },
+  "claude-haiku-4-5": { input: 1.0, output: 5.0 },
+};
+
+export function priceFor(model: string): { input: number; output: number } {
+  const price = MODEL_PRICING[model];
+  if (!price) {
+    throw new Error(`No pricing for model "${model}". Add it to MODEL_PRICING in src/lib/answer.ts.`);
+  }
+  return price;
+}
+
+/**
+ * Generation model. Configurable via GENERATION_MODEL so the same pipeline can be
+ * cost-tuned without code changes (see docs/metrics.md). Defaults to Haiku 4.5: on the
+ * eval it holds retrieval, citation, refusal, and faithfulness on par with the Opus
+ * baseline at ~5x lower cost per query and lower latency.
+ */
+export const GENERATION_MODEL = process.env.GENERATION_MODEL?.trim() || "claude-haiku-4-5";
+
+/**
+ * The eval's faithfulness judge stays pinned to the strongest model no matter which
+ * model generated the answer — a judge on the answer's own tier would grade itself.
+ */
+export const JUDGE_MODEL = "claude-opus-4-8";
 
 export const REFUSAL_TEXT = "Not in the knowledge base.";
 
@@ -51,7 +79,11 @@ const SYSTEM_PROMPT = `You are Mimir, a knowledge-base assistant. Answer questio
  * The full query pipeline: embed question -> retrieve top-k from pgvector ->
  * grounded Claude answer with inline chunk citations (or an honest refusal).
  */
-export async function answerQuestion(corpus: string, question: string): Promise<Answer> {
+export async function answerQuestion(
+  corpus: string,
+  question: string,
+  model: string = GENERATION_MODEL
+): Promise<Answer> {
   const started = Date.now();
   const { chunks, embeddingTokens } = await retrieve(corpus, question);
 
@@ -60,7 +92,7 @@ export async function answerQuestion(corpus: string, question: string): Promise<
     .join("\n\n");
 
   const response = await getClient().messages.create({
-    model: GENERATION_MODEL,
+    model,
     max_tokens: 1024,
     system: SYSTEM_PROMPT,
     messages: [
@@ -83,10 +115,11 @@ export async function answerQuestion(corpus: string, question: string): Promise<
   const citations = grounded ? extractCitations(answerText, chunks) : [];
   const latencyMs = Date.now() - started;
 
+  const price = priceFor(model);
   const costUsd =
     (embeddingTokens * EMBEDDING_PRICE_PER_MTOK +
-      response.usage.input_tokens * INPUT_PRICE_PER_MTOK +
-      response.usage.output_tokens * OUTPUT_PRICE_PER_MTOK) /
+      response.usage.input_tokens * price.input +
+      response.usage.output_tokens * price.output) /
     1_000_000;
 
   return {

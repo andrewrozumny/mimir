@@ -11,7 +11,7 @@ Mimir turns a set of documents into an API that answers questions with inline ci
 - **Config-driven ingestion** — a JSON config lists the corpus sources (local markdown files or live URLs). Swapping the entire knowledge base is a config change, zero code changes.
 - **Chunking + embeddings** — markdown-aware chunking along heading boundaries, embedded with OpenAI `text-embedding-3-small`.
 - **Vector retrieval** — chunks live in Postgres with [pgvector](https://github.com/pgvector/pgvector) (hosted on Neon); queries run cosine top-k over an HNSW index.
-- **Grounded generation** — Claude (`claude-opus-4-8`) answers strictly from the retrieved context and cites chunk ids inline, like `[docs/faq.md#2]`.
+- **Grounded generation** — Claude (`claude-haiku-4-5` by default, set via `GENERATION_MODEL`) answers strictly from the retrieved context and cites chunk ids inline, like `[docs/faq.md#2]`.
 - **Honest refusal** — questions outside the corpus get an exact, machine-detectable refusal instead of a guess.
 - **Idempotent re-ingestion** — stable chunk ids and content hashes: re-running ingest never duplicates rows, skips unchanged chunks, and cleans up deleted ones.
 - **Measured eval** — a Q&A suite reports retrieval hit rate, faithfulness, refusal accuracy, latency, and cost per query.
@@ -31,7 +31,7 @@ curl -s localhost:3000/api/chat \
   "citations": [
     { "id": "docs/how-it-works.md#4", "source": "docs/how-it-works.md", "snippet": "..." }
   ],
-  "usage": { "inputTokens": 2841, "outputTokens": 74, "costUsd": 0.016, "latencyMs": 2900 }
+  "usage": { "inputTokens": 2841, "outputTokens": 74, "costUsd": 0.003, "latencyMs": 1500 }
 }
 ```
 
@@ -44,7 +44,7 @@ Plain, readable code — no framework lock-in:
 - **Next.js + TypeScript** — HTTP API (and the future embeddable chat widget)
 - **Postgres + pgvector on Neon** — vector store
 - **OpenAI `text-embedding-3-small`** — embeddings
-- **Anthropic Claude (`claude-opus-4-8`)** — grounded generation
+- **Anthropic Claude (`claude-haiku-4-5`, cost-tuned via eval)** — grounded generation
 
 ## Quick start
 

@@ -57,9 +57,9 @@ Citations are validated server-side: the answer text is scanned for `[chunk-id]`
 ## Model choices
 
 - **Embeddings: OpenAI `text-embedding-3-small`** — strong retrieval quality at $0.02 per million tokens; embedding this repo's entire documentation costs a fraction of a cent.
-- **Generation: Claude `claude-opus-4-8`** — instruction-following strong enough to hold the grounding contract (cite everything, refuse honestly) without elaborate prompt gymnastics.
+- **Generation: Claude `claude-haiku-4-5`** (set via `GENERATION_MODEL`) — cost-tuned against the eval. Haiku holds the grounding contract (cite everything, refuse honestly) at ~5× lower cost and lower latency than the Opus baseline; the measured model comparison is in [metrics.md](metrics.md).
 
-Both are behind small wrappers, so swapping either is a one-file change.
+Both are behind small wrappers, so swapping either is a one-file change — the generation model is just an env var.
 
 ## Scaling path
 
