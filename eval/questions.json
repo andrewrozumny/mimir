@@ -1,0 +1,76 @@
+[
+  {
+    "question": "What is Mimir?",
+    "expect": "answer",
+    "expected_sources": ["README.md", "docs/how-it-works.md", "docs/faq.md"]
+  },
+  {
+    "question": "What does Mimir reply when a question is outside the knowledge base?",
+    "expect": "answer",
+    "expected_sources": ["docs/faq.md", "docs/how-it-works.md", "README.md", "docs/architecture.md"]
+  },
+  {
+    "question": "How do I point Mimir at my own documents?",
+    "expect": "answer",
+    "expected_sources": ["docs/faq.md", "README.md"]
+  },
+  {
+    "question": "Which embedding model does Mimir use?",
+    "expect": "answer",
+    "expected_sources": ["docs/architecture.md", "README.md", "docs/faq.md"]
+  },
+  {
+    "question": "Which model generates the answers?",
+    "expect": "answer",
+    "expected_sources": ["docs/architecture.md", "README.md", "docs/faq.md"]
+  },
+  {
+    "question": "How does Mimir keep re-ingestion idempotent?",
+    "expect": "answer",
+    "expected_sources": ["docs/how-it-works.md", "docs/faq.md", "README.md"]
+  },
+  {
+    "question": "What database and extension does Mimir use for vector search?",
+    "expect": "answer",
+    "expected_sources": ["README.md", "docs/architecture.md"]
+  },
+  {
+    "question": "How many chunks does Mimir retrieve per query?",
+    "expect": "answer",
+    "expected_sources": ["docs/architecture.md", "docs/how-it-works.md"]
+  },
+  {
+    "question": "How are citations validated on the server?",
+    "expect": "answer",
+    "expected_sources": ["docs/how-it-works.md", "docs/architecture.md", "docs/faq.md"]
+  },
+  {
+    "question": "Can Mimir ingest a live website?",
+    "expect": "answer",
+    "expected_sources": ["docs/faq.md", "docs/how-it-works.md", "README.md"]
+  },
+  {
+    "question": "What metrics does the evaluation suite report?",
+    "expect": "answer",
+    "expected_sources": ["README.md", "docs/faq.md", "docs/architecture.md"]
+  },
+  {
+    "question": "What features are deliberately left for the roadmap?",
+    "expect": "answer",
+    "expected_sources": ["README.md", "docs/architecture.md", "docs/faq.md"]
+  },
+  {
+    "question": "Roughly how much does a typical query cost?",
+    "expect": "answer",
+    "expected_sources": ["docs/faq.md", "README.md"]
+  },
+  {
+    "question": "Who is Mimir named after?",
+    "expect": "answer",
+    "expected_sources": ["docs/faq.md"]
+  },
+  { "question": "What is the capital of France?", "expect": "refusal" },
+  { "question": "How do I configure autoscaling in Kubernetes?", "expect": "refusal" },
+  { "question": "Who won the 2022 FIFA World Cup?", "expect": "refusal" },
+  { "question": "What is a good recipe for borscht?", "expect": "refusal" }
+]
