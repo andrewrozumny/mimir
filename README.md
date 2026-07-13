@@ -118,4 +118,4 @@ Deliberately not built yet — each is a straightforward extension of the curren
 
 ## License
 
-MIT
+Mimir is released under the MIT License — free to use, modify, and distribute, including commercially. See [LICENSE](LICENSE) for the full text.
