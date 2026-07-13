@@ -1,0 +1,9 @@
+{
+  "corpus": "mimir-docs",
+  "sources": [
+    { "type": "file", "path": "README.md" },
+    { "type": "file", "path": "docs/architecture.md" },
+    { "type": "file", "path": "docs/how-it-works.md" },
+    { "type": "file", "path": "docs/faq.md" }
+  ]
+}
