@@ -1,7 +1,7 @@
 /**
  * CORS for the public chat endpoint. Same-origin callers (the standalone demo
- * page) don't need it; the helpmybiz widget calls from another origin, so we
- * reflect the request origin when it's on the allowlist.
+ * page) don't need it; an embedded widget on an external site calls from
+ * another origin, so we reflect the request origin when it's on the allowlist.
  *
  * ALLOWED_ORIGINS is a comma-separated list. "*" allows any origin (fine for a
  * public read-only demo behind the rate limit and daily budget).
